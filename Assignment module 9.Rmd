@@ -1,0 +1,75 @@
+---
+title: "Assignment : Module 9 - Goal Programming"
+author: "Venkata Naga Siddartha Gutha"
+date: "`r Sys.Date()`"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+The Research and Development Division of the Emax Corporation has developed three new products. A
+decision now needs to be made on which mix of these products should be produced. Management wants
+primary consideration given to three factors:
+1. Total Profit,
+2. Stability in the workforce and
+3. Achieving an increase in the company’s earnings next year from the $75 million achieved
+this year.
+Objective Function
+Maximize Z = P - 6C - 3D, where
+P = Total discounted profit over the life of the new products,
+C = Change in either direction towards the current level of employment,
+D = decrease if any in next year’s earnings from the current year’s level.
+```{r}
+library(lpSolve)
+library(lpSolveAPI)
+
+```
+
+Loading the LP file from the current directory and printing the model
+Defining y1p and y1m as the amount over (if any) and the amount under (if any) the employment level goal.
+Defining y2p and y2m in the same way for the goal regarding earnings next year.
+Define x1, x2 and x3 as the production rates of Products 1, 2, and 3, respectively.
+Also expressing P in terms of x1, x2 and x3 and the objective function in terms of x1, x2, x3, y1p, y1m , y2p and y2m
+
+```{r}
+equations_lp<- read.lp("C:/Users/sidda/Downloads/emax.lp")
+print(equations_lp)
+table <- matrix(c("Total Profit", "Employment Level", "Earnings Next Year",
+20,6,8,
+15,4,7,
+25,5,5,
+"Maximize","=50",">=75", "Millions of Dollars", "Hundreds of Employees", "Millions of Dollars"), ncol=6)
+colnames(table) <- c("Factor","Product 1", "Product 2", "Product 3", "Goal", "Units")
+as.table(table)
+solve(equations_lp)
+get.objective(equations_lp)
+get.variables(equations_lp)
+```
+
+Interpretation:
+
+
+X1,X2,X3 represents the units that fimrs need to produce inorder to maximize the objective function
+
+From the results it can be seen that firm can produce 15 units of product 3 to maximize profit and product 1 and 2 cannot be produced as intended as the result was 0
+
+Employement level of the firm is exceeded by 25 hundred employees so this would result in paying more for rise in the employees
+
+Result of y2p and y2m is 0 this shows that there is no increase or decrease in earnings of the company in the next year compared to the current year. this implies that earnings of the firm remains constant next year
+ 
+finally the value of the objective function is 225 Million Dollars.
+ 
+
+
+
+
+
+
+
+
+
+
+
